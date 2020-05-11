@@ -13093,13 +13093,13 @@ div#notebook {
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>This dataset collects informationfrom 100k medical appointments inBrazil and is focused on the questionof whether or not patients show upfor their appointment. Appointment details are given to us. Various factors which could have a possbile relation with the absence of a patient is also given.</p>
 <p>We have to find out that whether any factor have a realtion with the absence of patient on appointment day. Possible factors ,analysed in this report, which can have a realtion with the absence of patients are:-</p>
 <ul>
-<li>Age_group of patient</li>
-<li>Timegap, in months, between appointmentday and scheduledday</li>
-<li>Male or female</li>
-<li>SMS sent to the patient</li>
-<li>Number of disease that a patient have</li>
-<li>Severity of handicapness of the patient</li>
-<li>Which day of the week was appointment day</li>
+<li>Is there any realtion between age of patients and their absence?</li>
+<li>Does timegap between scheduleday and appointment day have any impact on presence of patient?</li>
+<li>Which group, male or female, is more likely to absent?</li>
+<li>Any difference in presence of patients to whom SMS was sent?</li>
+<li>Relation between severity of handicapness and patients's absence?</li>
+<li>Is there any particular weekday where patients are more likely to absent?</li>
+<li>Is there any realtionship between age group and number of diseases that a patient have?</li>
 </ul>
 
 </div>
@@ -13107,7 +13107,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[178]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13126,18 +13126,17 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id='wrangling'></a></p>
-<h2 id="Data-Wrangling">Data Wrangling<a class="anchor-link" href="#Data-Wrangling">&#182;</a></h2><blockquote><p><strong>Tip</strong>: In this section of the report, you will load in the data, check for cleanliness, and then trim and clean your dataset for analysis. Make sure that you document your steps carefully and justify your cleaning decisions.</p>
-</blockquote>
-<h3 id="General-Properties">General Properties<a class="anchor-link" href="#General-Properties">&#182;</a></h3>
+<h2 id="Data-Wrangling">Data Wrangling<a class="anchor-link" href="#Data-Wrangling">&#182;</a></h2><h3 id="General-Properties">General Properties<a class="anchor-link" href="#General-Properties">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[179]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/noshowappointments-kagglev2-may-2016.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/noshowappointments-kagglev2-may-2016.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13147,10 +13146,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[180]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Overview of data</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13163,7 +13163,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[180]:</div>
+    <div class="prompt output_prompt">Out[54]:</div>
 
 
 
@@ -13301,10 +13301,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[181]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Checking data structure</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13352,10 +13353,10 @@ memory usage: 11.8+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[182]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of duplicate rows</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Is there any Number of duplicate rows</span>
 <span class="nb">sum</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span>
 </pre></div>
 
@@ -13369,7 +13370,7 @@ memory usage: 11.8+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[182]:</div>
+    <div class="prompt output_prompt">Out[56]:</div>
 
 
 
@@ -13386,7 +13387,7 @@ memory usage: 11.8+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[183]:</div>
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#  number of rows that have null values</span>
@@ -13403,7 +13404,7 @@ memory usage: 11.8+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[183]:</div>
+    <div class="prompt output_prompt">Out[57]:</div>
 
 
 
@@ -13420,7 +13421,7 @@ memory usage: 11.8+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[184]:</div>
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of unique values every column have</span>
@@ -13437,7 +13438,7 @@ memory usage: 11.8+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[184]:</div>
+    <div class="prompt output_prompt">Out[58]:</div>
 
 
 
@@ -13469,13 +13470,14 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Renaming-columns">Renaming columns<a class="anchor-link" href="#Renaming-columns">&#182;</a></h3>
+<h3 id="Renaming-columns">Renaming columns<a class="anchor-link" href="#Renaming-columns">&#182;</a></h3><p>Because we don't want to remember whether column name contain upper or lower letter we are converting every alphabet in lower case for consistency</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[185]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># lowercasing every coulumn name</span>
@@ -13489,7 +13491,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[186]:</div>
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
@@ -13505,7 +13507,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[186]:</div>
+    <div class="prompt output_prompt">Out[60]:</div>
 
 
 
@@ -13526,13 +13528,14 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Changing-datatype-in-columns">Changing datatype in columns<a class="anchor-link" href="#Changing-datatype-in-columns">&#182;</a></h3>
+<h3 id="Changing-datatype-in-columns">Changing datatype in columns<a class="anchor-link" href="#Changing-datatype-in-columns">&#182;</a></h3><p>There are two columns containing dates but we can't perform date operations on them because they not of datetime data type.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[187]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Cheking data type of current dates columns</span>
@@ -13549,7 +13552,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[187]:</div>
+    <div class="prompt output_prompt">Out[61]:</div>
 
 
 
@@ -13566,7 +13569,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[188]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Changing into datetime format</span>
@@ -13581,7 +13584,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[189]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Cheking data type of current dates columns</span>
@@ -13598,7 +13601,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[189]:</div>
+    <div class="prompt output_prompt">Out[63]:</div>
 
 
 
@@ -13614,9 +13617,17 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>No-show column contain yes or no values. But it will be easier to do operations on boolean values so let's convert them in boolean data type.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[190]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Change no-show column data type in Boolean</span>
@@ -13631,13 +13642,22 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Adding-columns-for-our-analysis">Adding columns for our analysis<a class="anchor-link" href="#Adding-columns-for-our-analysis">&#182;</a></h3>
+<h3 id="Adding-columns-for-our-analysis">Adding columns for our analysis<a class="anchor-link" href="#Adding-columns-for-our-analysis">&#182;</a></h3><p>We require some further columns for data analysis. Let's add them</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, we require timegap column becuase we want to analyse the timegap between appointment and scheduled date with absence of patients.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[191]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Difference between appointment date and scheduledday</span>
@@ -13648,10 +13668,10 @@ dtype: int64</pre>
 </div>
 </div>
 
-</div>
+</div>Second, we require daty of week on appointment date column because we want to access whether there is any particular day of week where patients are absent. 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[192]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding day of week(dow) on Appointment day column</span>
@@ -13665,7 +13685,20 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[193]:</div>
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We require number_disease column because we want to get the realtionship between age_groups and this.</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of disease from the given name of disease in data</span>
@@ -13680,14 +13713,14 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Removing-extra-columns">Removing extra columns<a class="anchor-link" href="#Removing-extra-columns">&#182;</a></h3><p>Removing those columns which are not important for furteher analysis</p>
+<h3 id="Removing-extra-columns">Removing extra columns<a class="anchor-link" href="#Removing-extra-columns">&#182;</a></h3><p>Removing those columns which are not important for further analysis</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[194]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;patientid&#39;</span><span class="p">,</span> <span class="s1">&#39;appointmentid&#39;</span><span class="p">,</span> <span class="s1">&#39;scheduledday&#39;</span><span class="p">,</span>
@@ -13702,10 +13735,11 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[195]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># let&#39;s have a look at data now</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13718,7 +13752,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[195]:</div>
+    <div class="prompt output_prompt">Out[70]:</div>
 
 
 
@@ -13828,10 +13862,11 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[196]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># let&#39;s check the statistical summary of data</span>
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13844,7 +13879,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[196]:</div>
+    <div class="prompt output_prompt">Out[71]:</div>
 
 
 
@@ -13965,7 +14000,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[197]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows where age is less than 0</span>
@@ -13982,7 +14017,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[197]:</div>
+    <div class="prompt output_prompt">Out[72]:</div>
 
 
 
@@ -13999,7 +14034,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[198]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows where timegap between appointment date and scheduled date is -ve</span>
@@ -14016,7 +14051,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[198]:</div>
+    <div class="prompt output_prompt">Out[73]:</div>
 
 
 
@@ -14033,7 +14068,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[199]:</div>
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows before dropping</span>
@@ -14050,7 +14085,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[199]:</div>
+    <div class="prompt output_prompt">Out[74]:</div>
 
 
 
@@ -14067,7 +14102,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[200]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Dropping rows </span>
@@ -14082,7 +14117,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[201]:</div>
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows before dropping</span>
@@ -14099,7 +14134,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[201]:</div>
+    <div class="prompt output_prompt">Out[76]:</div>
 
 
 
@@ -14116,7 +14151,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[202]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows where age is less than 0</span>
@@ -14133,7 +14168,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[202]:</div>
+    <div class="prompt output_prompt">Out[77]:</div>
 
 
 
@@ -14150,7 +14185,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[203]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of rows where timegap between appointment date and scheduled date is -ve</span>
@@ -14167,7 +14202,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[203]:</div>
+    <div class="prompt output_prompt">Out[78]:</div>
 
 
 
@@ -14190,9 +14225,17 @@ dtype: int64</pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's divide age column in 4 categories of ages</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[204]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Categorising age data in 4 age_groups</span>
@@ -14204,9 +14247,17 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's divide timegap column in 6 categories because it will be earsier to make comparison when we will have different categories</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[205]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Categorising timegap in months</span>
@@ -14218,9 +14269,17 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Becasuse we have taken the categories of the columns the respective column are no longer needed</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[206]:</div>
+<div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Dropping columns</span>
@@ -14234,10 +14293,11 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[207]:</div>
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let&#39;s have a look at data structure now</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -14279,10 +14339,11 @@ memory usage: 5.4+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[208]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># A quick snap of our data</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -14295,7 +14356,7 @@ memory usage: 5.4+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[208]:</div>
+    <div class="prompt output_prompt">Out[83]:</div>
 
 
 
@@ -14400,13 +14461,14 @@ memory usage: 5.4+ MB
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id='eda'></a></p>
 <h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">&#182;</a></h2><p>Now our data is ready for analysis. From now we will try to answers all the questions we make at introduction stage</p>
-<h3 id="Is-there-any-realtion-between-age-of-patients-and-their-absence">Is there any realtion between age of patients and their absence<a class="anchor-link" href="#Is-there-any-realtion-between-age-of-patients-and-their-absence">&#182;</a></h3>
+<h3 id="Is-there-any-realtion-between-age-of-patients-and-their-absence">Is there any realtion between age of patients and their absence<a class="anchor-link" href="#Is-there-any-realtion-between-age-of-patients-and-their-absence">&#182;</a></h3><p>Here we want to analyse whether childeren, young or old people have more tendency to be late.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[209]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -14420,7 +14482,7 @@ memory usage: 5.4+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[210]:</div>
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -14434,7 +14496,7 @@ memory usage: 5.4+ MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[211]:</div>
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -14452,7 +14514,7 @@ memory usage: 5.4+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[211]:</div>
+    <div class="prompt output_prompt">Out[86]:</div>
 
 
 
@@ -14473,7 +14535,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[212]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
@@ -14512,13 +14574,14 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Does-timegap-between-scheduleday-and-appointment-day-have-any-impact-on-presence-of-patient?">Does timegap between scheduleday and appointment day have any impact on presence of patient?<a class="anchor-link" href="#Does-timegap-between-scheduleday-and-appointment-day-have-any-impact-on-presence-of-patient?">&#182;</a></h3>
+<h3 id="Does-timegap-between-scheduleday-and-appointment-day-have-any-impact-on-presence-of-patient?">Does timegap between scheduleday and appointment day have any impact on presence of patient?<a class="anchor-link" href="#Does-timegap-between-scheduleday-and-appointment-day-have-any-impact-on-presence-of-patient?">&#182;</a></h3><p>Since there are possibilities that the appointment which is far away can be off the chart from any person's calender. As the time increases chances are patient didn't take appiointment seriously. Let's look at the data to check our hypothesis.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[213]:</div>
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -14532,7 +14595,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[214]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -14546,7 +14609,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[215]:</div>
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -14564,7 +14627,7 @@ dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[215]:</div>
+    <div class="prompt output_prompt">Out[90]:</div>
 
 
 
@@ -14587,7 +14650,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[216]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
@@ -14626,13 +14689,14 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Which-group,-male-or-female,-is-more-likely-to-absent">Which group, male or female, is more likely to absent<a class="anchor-link" href="#Which-group,-male-or-female,-is-more-likely-to-absent">&#182;</a></h3>
+<h3 id="Which-group,-male-or-female,-is-more-likely-to-absent">Which group, male or female, is more likely to absent<a class="anchor-link" href="#Which-group,-male-or-female,-is-more-likely-to-absent">&#182;</a></h3><p>This is just a random experiment that whether there is any realtionship between a person's gender and his/her habit of getting late.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[217]:</div>
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -14646,7 +14710,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[218]:</div>
+<div class="prompt input_prompt">In&nbsp;[93]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -14660,7 +14724,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[219]:</div>
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -14678,7 +14742,7 @@ dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[219]:</div>
+    <div class="prompt output_prompt">Out[94]:</div>
 
 
 
@@ -14698,7 +14762,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[220]:</div>
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
@@ -14738,13 +14802,14 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Any-difference-in-presence-of-patients-to-whom-SMS-was-sent?">Any difference in presence of patients to whom SMS was sent?<a class="anchor-link" href="#Any-difference-in-presence-of-patients-to-whom-SMS-was-sent?">&#182;</a></h3>
+<h3 id="Any-difference-in-presence-of-patients-to-whom-SMS-was-sent?">Any difference in presence of patients to whom SMS was sent?<a class="anchor-link" href="#Any-difference-in-presence-of-patients-to-whom-SMS-was-sent?">&#182;</a></h3><p>One possibililty is that the patients who got message will not be absent on the appointment day. Let's check whether it's true or not.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[221]:</div>
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -14758,7 +14823,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[222]:</div>
+<div class="prompt input_prompt">In&nbsp;[97]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -14772,7 +14837,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[223]:</div>
+<div class="prompt input_prompt">In&nbsp;[98]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -14790,7 +14855,7 @@ dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[223]:</div>
+    <div class="prompt output_prompt">Out[98]:</div>
 
 
 
@@ -14810,7 +14875,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[224]:</div>
+<div class="prompt input_prompt">In&nbsp;[99]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
@@ -14850,127 +14915,14 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Does-number-of-disease-that-a-patient-have-make-any-impact-on-his-absence?">Does number of disease that a patient have make any impact on his absence?<a class="anchor-link" href="#Does-number-of-disease-that-a-patient-have-make-any-impact-on-his-absence?">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[225]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
-<span class="n">total_patients</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;number_disease&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-</pre></div>
+<h3 id="Relation-between-severity-of-handicapness-and-patients's-absence?">Relation between severity of handicapness and patients's absence?<a class="anchor-link" href="#Relation-between-severity-of-handicapness-and-patients's-absence?">&#182;</a></h3><p>There can a possibility that a handicape person may not be able to show up on the day of appointment becase of some physical issue. let's check it</p>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[226]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
-<span class="n">absent_patients</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;number_disease&#39;</span><span class="p">)[</span><span class="s1">&#39;no-show&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[227]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
-<span class="n">absent_prop</span><span class="o">=</span><span class="n">absent_patients</span><span class="o">/</span><span class="n">total_patients</span>
-<span class="n">absent_prop</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[227]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>number_disease
-0    0.209047
-1    0.177966
-2    0.177037
-3    0.179688
-dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[228]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion of absence for patients having different number of disease&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of disease patient have&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Proportion of Absent patients&#39;</span><span class="p">);</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Relation-between-severity-of-handicapness-and-patients's-absence?">Relation between severity of handicapness and patients's absence?<a class="anchor-link" href="#Relation-between-severity-of-handicapness-and-patients's-absence?">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[229]:</div>
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -14984,7 +14936,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[230]:</div>
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -14998,7 +14950,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[231]:</div>
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -15016,7 +14968,7 @@ dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[231]:</div>
+    <div class="prompt output_prompt">Out[102]:</div>
 
 
 
@@ -15039,7 +14991,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[232]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">absent_prop</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">)</span>
@@ -15078,13 +15030,14 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Is-there-any-particular-weekday-where-patients-are-more-likely-to-absent?">Is there any particular weekday where patients are more likely to absent?<a class="anchor-link" href="#Is-there-any-particular-weekday-where-patients-are-more-likely-to-absent?">&#182;</a></h3>
+<h3 id="Is-there-any-particular-weekday-where-patients-are-more-likely-to-absent?">Is there any particular weekday where patients are more likely to absent?<a class="anchor-link" href="#Is-there-any-particular-weekday-where-patients-are-more-likely-to-absent?">&#182;</a></h3><p>We all know how much lazy we are on saturday and how much busy we are on monday. Let's check wheter we found some realtion here to prove that human nature.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[233]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Total patients in each group</span>
@@ -15098,7 +15051,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[234]:</div>
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of absent patients in each group</span>
@@ -15112,7 +15065,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[235]:</div>
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Proportion of absent patient in each group</span>
@@ -15131,7 +15084,7 @@ dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[235]:</div>
+    <div class="prompt output_prompt">Out[106]:</div>
 
 
 
@@ -15154,7 +15107,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[236]:</div>
+<div class="prompt input_prompt">In&nbsp;[107]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="n">absent_prop</span><span class="p">[</span><span class="n">order</span><span class="p">])</span>
@@ -15194,15 +15147,88 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Is-there-any-realtionship-between-age-group-and-number-of-diseases-that-a-patient-have?">Is there any realtionship between age group and number of diseases that a patient have?<a class="anchor-link" href="#Is-there-any-realtionship-between-age-group-and-number-of-diseases-that-a-patient-have?">&#182;</a></h3><p>We know that people from higher age_group are tend to be infected from more disease. So let's find out whether we can find any obvious realtionsip here.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Average number of disease people in different age groups</span>
+<span class="n">disease_age_group</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;age_group&#39;</span><span class="p">)[</span><span class="s1">&#39;number_disease&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">disease_age_group</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">disease_age_group</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age group&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;average number of disease person have&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average number of disease for different age_groups&#39;</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">&#182;</a></h2><p>There are some error in data as we found out at the stage of data cleaning. Like:-</p>
+<ul>
+<li>age of someone is given in -ve which is not possible.</li>
+<li>in some cases date of appointment is before scheduled date. It is natural that if that's the case then it is obvious that patient will be absent on appointment date.
+It seems like these are human error and because these don't effect many observations we removed them to clean analysis. But results may be different if the data is accurate.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><a id='conclusions'></a></p>
 <h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><ul>
 <li>Patients within Age group 10-25 have maximum proportion of absence. Whereas old patients are least likely to absent.</li>
 <li>Appointment date which are within one month of scheduled date have most chances that patient will present. There is not a positive correlation between timegap and absence but timegap of 5-6 months are showing comparitively more chances of absennce.</li>
 <li>It doesn't make a difference that a patient is male or female. He/she has equal chances of absence.</li>
 <li>Sending SMS shows negative impact on presence. Patients who received SMS are more likely of absent.</li>
-<li>No clear pattern for number of disease and absence of patients but persons who do not have any type of disease have slightly more chances of getting absent.</li>
 <li>Absence of patient and his severity of handicapness is positively correlated.</li>
 <li>Patients are more likely to be absent on Saturday i.e. weekend.</li>
+<li>As we all know the obvious realtion between age and disease, our data is also obvious here. It is clearly showing that how age group of old people have the highest average number of disease.</li>
 </ul>
 
 </div>
